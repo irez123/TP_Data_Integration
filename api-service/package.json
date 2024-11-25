@@ -1,7 +1,7 @@
 {
   "name": "api-service",
   "version": "1.0.0",
-  "description": "API for Kafka Data Integration",
+  "description": "API-HAMIDI_BOUDOUH_TANDOU",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -18,6 +18,6 @@
     "node": ">=18.0.0"
   },
   "keywords": ["kafka", "nodejs", "api", "data-integration"],
-  "author": "Votre Nom",
+  "author": "René HAMIDI",
   "license": "MIT"
 }
