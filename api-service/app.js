@@ -137,8 +137,12 @@ app.get('/api/spark-metrics', async (req, res) => {
 // On simule le calcul de nos métriques ici
 app.get('/api/metrics', (req, res) => {
   const metrics = {
-    averageIncome: 50000,
-    populationCount: 1000000,
+    total-population.csv
+  Ce fichier Excel contient plusieurs variables qui permettent d&#39;analyser des données relatives à
+différents quartiers ou zones.
+    mean : 3399.2,
+    Q1: 1186,
+    Q4: 4420,
   };
 
   res.json(metrics);
