@@ -11,19 +11,16 @@ const port = 5000;
 
 app.use(express.json());
 
-// Configuration pour le téléchargement de fichiers
 const upload = multer({ dest: 'uploads/' });
 
 // Configuration de Kafka
 const kafka = new Kafka({
   clientId: 'api-service',
-  brokers: ['kafka:9092'], // Assurez-vous que ce broker est correct selon votre setup Docker
+  brokers: ['kafka:9092'], 
 });
 
 // Initialisation du producteur Kafka
 const producer = kafka.producer();
-
-// Middleware pour s'assurer que Kafka Producer est connecté
 let producerReady = false;
 
 const connectProducer = async () => {
@@ -50,20 +47,15 @@ const hdfsClient = hdfs.createClient({
 // Configuration Spark
 const SPARK_MASTER_URL = 'http://spark-master:8080'; // URL du Spark Master REST API
 
-// Route GET pour la racine
 app.get('/', (req, res) => {
   res.send('Welcome to the API Service! Use /api/send-to-kafka, /api/metrics, /api/read-from-hdfs, or /api/spark-metrics');
 });
-
-// Route POST pour envoyer un fichier CSV à Kafka
 app.post('/api/send-file-to-kafka', upload.single('file'), async (req, res) => {
   const filePath = req.file.path;
 
   try {
-    // Stocker les messages à envoyer à Kafka
     const messages = [];
 
-    // Lire et parser le fichier CSV
     fs.createReadStream(filePath)
       .pipe(csv()) // Convertit chaque ligne du CSV en un objet JSON
       .on('data', (row) => {
@@ -142,9 +134,8 @@ app.get('/api/spark-metrics', async (req, res) => {
   }
 });
 
-// Route GET pour récupérer des métriques simulées
+// On simule le calcul de nos métriques ici
 app.get('/api/metrics', (req, res) => {
-  // Simulez les métriques ou implémentez une connexion avec Spark pour les récupérer dynamiquement
   const metrics = {
     averageIncome: 50000,
     populationCount: 1000000,
@@ -153,19 +144,16 @@ app.get('/api/metrics', (req, res) => {
   res.json(metrics);
 });
 
-// Middleware pour gérer les erreurs
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Lancer le serveur
 app.listen(port, async () => {
   console.log(`API service listening at http://localhost:${port}`);
   await connectProducer(); // Connecter le producteur au démarrage
 });
 
-// Fermeture gracieuse du producteur Kafka lors de la sortie
 process.on('SIGINT', async () => {
   console.log('Shutting down gracefully...');
   if (producerReady) {
