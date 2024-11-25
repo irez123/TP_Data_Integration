@@ -15,7 +15,7 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "29092:29092"  # Port exposé pour la connexion externe (host) à Kafka
+      - "29092:29092"  
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -76,7 +76,7 @@ services:
       CORE_CONF_fs_defaultFS: hdfs://hadoop-namenode:9000  # Connexion à HDFS
       SPARK_DIST_CLASSPATH: /opt/hadoop/etc/hadoop:/opt/hadoop/share/hadoop/common/*:/opt/hadoop/share/hadoop/common/lib/*:/opt/hadoop/share/hadoop/hdfs/*:/opt/hadoop/share/hadoop/hdfs/lib/*:/opt/hadoop/share/hadoop/mapreduce/*:/opt/hadoop/share/hadoop/mapreduce/lib/*:/opt/hadoop/share/hadoop/yarn/*:/opt/hadoop/share/hadoop/yarn/lib/*
     depends_on:
-      - hadoop-namenode  # Assurez-vous que le namenode est prêt
+      - hadoop-namenode  
     networks:
       - bigdata_network
 
