@@ -144,42 +144,26 @@ spark-shell --master spark://spark-master:7077
 
 ### f. Lire un fichier CSV depuis HDFS dans Spark
 
-Une fois le shell Spark lancé, nous lisons un fichier CSV stocké sur HDFS et affichons son contenu :
+Une fois le shell Spark lancé, nous lisons un fichier CSV stocké sur HDFS et affichons son contenu, par la suite, on joint nos fichiers, :
 
 ```scala
 val df = spark.read.option("header", "true").csv("hdfs://hadoop-namenode:9000/data/aggregate.csv")
+val selfEmploymentDF = spark.read.option("header", "true").csv("hdfs://hadoop-namenode:9000/data/self-employment.csv")
+val healthDF = spark.read.option("header", "true").csv("hdfs://hadoop-namenode:9000/data/types-of-health.csv")
 df.show()
+
+val joinedDFLeft = df.join(selfEmploymentDF, Seq("Id"), "left")
+joinedDFLeft.show()
 ```
 
 - **spark.read.option("header", "true").csv** : Charge le fichier CSV en précisant que la première ligne contient les noms de colonnes.
 - **df.show()** : Affiche les premières lignes du fichier CSV dans le shell Spark.
 
----
+### g. Calcul de métriques dans Spark
+Cette partie n'a pas été traitée
 
-## 4. **MongoDB**
-
-### a. Lancer MongoDB dans un conteneur Docker
-
-Pour gérer les données via une base de données NoSQL, nous utilisons MongoDB. La commande suivante permet de démarrer MongoDB dans un conteneur Docker, cette partie n'a pas été terminée :
-
-```bash
-docker run -d --name mongodb -p 27017:27017 -v C:/Users/LENOVO/Documents/TP_DataIntegration/mongo-data:/data/db mongo
-```
-
-- **docker run -d** : Lance un conteneur MongoDB en mode détaché.
-- **--name mongodb** : Nomme le conteneur `mongodb`.
-- **-p 27017:27017** : Mappe le port 27017 du conteneur sur celui de l'hôte, permettant l'accès à MongoDB via `localhost:27017`.
-- **-v /path/to/data:/data/db** : Monte un volume de données pour MongoDB, permettant de conserver les données entre les redémarrages du conteneur.
-
-### b. Accéder à MongoDB via le shell
-
-Une fois MongoDB en cours d'exécution, cette commande permet d'accéder au shell MongoDB à l'intérieur du conteneur :
-
-```bash
-docker exec -it mongodb mongo
-```
-
-- **docker exec -it mongodb mongo** : Ouvre une session MongoDB à l'intérieur du conteneur, permettant d'interagir avec la base de données.
 
 ---
+
+
 
